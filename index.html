@@ -16,8 +16,8 @@
   header h1{font-size:15px; margin:0; white-space:nowrap}
   .hstat{font-size:12px; color:#5b5667; font-weight:800; text-align:center; flex:1; line-height:1.2}
   .hstat b{color:#d6336c}
-  header button.tb{font:inherit; border:none; background:#ffffffcc; padding:7px 10px; border-radius:999px; cursor:pointer; font-weight:800; box-shadow:0 1px 3px #0002; white-space:nowrap; font-size:12.5px}
-  header button.lang{background:#22202b; color:#fff}
+  header .tb{font:inherit; border:none; background:#ffffffcc; padding:7px 10px; border-radius:999px; cursor:pointer; font-weight:800; box-shadow:0 1px 3px #0002; white-space:nowrap; font-size:12.5px; text-decoration:none; color:#222; display:inline-flex; align-items:center}
+  header .lang{background:#22202b; color:#fff}
   .bar{width:100%; max-width:480px; height:5px; background:#ffffff66; border-radius:9px; margin:4px 14px 0; overflow:hidden}
   .bar>i{display:block; height:100%; width:0; background:linear-gradient(90deg,#ff7a45,#ff4d79); transition:width .25s}
   #stage{position:relative; width:100%; max-width:480px; flex:1; padding:8px 14px 0; display:flex; align-items:flex-start; justify-content:center}
@@ -84,6 +84,7 @@
 <header>
   <h1 id="h1">Siriraj ❤</h1>
   <div class="hstat" id="hstat"></div>
+  <a class="tb" href="map.html" title="地圖 / แผนที่">🗺️</a>
   <button class="tb lang" id="blang">ไทย</button>
   <button class="tb" id="openlist">▦</button>
 </header>
