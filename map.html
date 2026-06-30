@@ -29,16 +29,16 @@
   .thumb .sc{position:absolute;right:0;bottom:0;background:#000a;color:#fff;font-size:9px;font-weight:800;padding:0 3px;border-top-left-radius:5px}
   .poi{font-size:19px;line-height:1;filter:drop-shadow(0 1px 1px #fff) drop-shadow(0 0 2px #fff)}
   .hosp{background:#e8112d;color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:15px;box-shadow:0 1px 4px #0006;border:2px solid #fff}
-  .lp{width:210px} .lp img{width:100%;height:118px;object-fit:cover;border-radius:8px;background:#eee}
-  .lp .t{font-weight:800;font-size:13px;margin:6px 0 3px;line-height:1.3}
-  .lp .c{font-size:12px;color:#333;line-height:1.75}
-  .lp .b{display:inline-block;background:#fff0e6;color:#d35400;border-radius:999px;padding:1px 7px;font-weight:800}
-  .lp .k{display:inline-block;background:#eafaf0;color:#178a4c;border-radius:999px;padding:1px 6px;margin:1px;font-weight:700}
-  .lp .w{display:inline-block;background:#fdeaea;color:#c0392b;border-radius:999px;padding:1px 6px;margin:1px;font-weight:700}
-  .lp .lk{margin-top:7px;display:flex;gap:7px}
-  .lp .lk a{flex:1;text-align:center;text-decoration:none;font-weight:800;font-size:12px;padding:7px;border-radius:9px;color:#fff}
+  .lp{width:100%} .lp img{width:100%;height:260px;object-fit:cover;border-radius:11px;background:#eee}
+  .lp .t{font-weight:800;font-size:19px;margin:10px 0 5px;line-height:1.3}
+  .lp .c{font-size:16px;color:#333;line-height:2}
+  .lp .b{display:inline-block;background:#fff0e6;color:#d35400;border-radius:999px;padding:2px 10px;font-weight:800;font-size:16px}
+  .lp .k{display:inline-block;background:#eafaf0;color:#178a4c;border-radius:999px;padding:2px 9px;margin:2px;font-weight:700;font-size:14px}
+  .lp .w{display:inline-block;background:#fdeaea;color:#c0392b;border-radius:999px;padding:2px 9px;margin:2px;font-weight:700;font-size:14px}
+  .lp .lk{margin-top:11px;display:flex;gap:9px}
+  .lp .lk a{flex:1;text-align:center;text-decoration:none;font-weight:800;font-size:16px;padding:12px;border-radius:11px;color:#fff}
   .lp .lk a.a{background:#ff7a45} .lp .lk a.b2{background:#1f6feb}
-  .leaflet-popup-content{margin:9px 11px}
+  .leaflet-popup-content{margin:12px 14px}
 </style>
 </head>
 <body>
@@ -107,6 +107,7 @@ function popupHTML(d){const c=[];
 function thumbHTML(d){return '<div class="thumb" style="border-color:'+color(d.score)+'">'+(d.cover?'<img src="'+d.cover+'" loading="lazy">':'')+'<span class="sc">'+d.score+'</span></div>';}
 const listingLayer=L.layerGroup().addTo(map);
 const THUMB_MAX=55, RENDER_MAX=220;
+const POPOPTS={maxWidth:Math.min(Math.round(innerWidth*0.92),460), minWidth:Math.min(Math.round(innerWidth*0.92),300), maxHeight:Math.round(innerHeight*0.74), autoPan:true, autoPanPadding:[14,14]};
 function rebuild(){
   listingLayer.clearLayers();
   const b=map.getBounds(); let vis2=filtered().filter(d=>b.contains([d.lat,d.lon]));
@@ -114,7 +115,7 @@ function rebuild(){
   vis2.slice(0,RENDER_MAX).forEach(d=>{let m;
     if(photo&&d.cover) m=L.marker([d.lat,d.lon],{icon:L.divIcon({className:'',html:thumbHTML(d),iconSize:[46,46],iconAnchor:[23,23]}),riseOnHover:true});
     else m=L.circleMarker([d.lat,d.lon],{radius:Math.max(5,(d.score-40)/6),color:'#fff',weight:1,fillColor:color(d.score),fillOpacity:.9});
-    m.bindPopup(()=>popupHTML(d)); listingLayer.addLayer(m);});
+    m.bindPopup(()=>popupHTML(d),POPOPTS); listingLayer.addLayer(m);});
   document.getElementById('cnt').textContent=t('cnt',{n:vis2.length,t:total})+(photo?'':' '+t('zoomHint'));
 }
 map.on('moveend',rebuild);
