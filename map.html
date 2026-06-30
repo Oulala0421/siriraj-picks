@@ -24,9 +24,9 @@
   .tg.on{background:#1f3a5f;color:#fff;border-color:#1f3a5f}
   .leg{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px;font-size:11px;color:#555}
   .leg i{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:-1px}
-  .thumb{width:46px;height:46px;border-radius:10px;border:3px solid #2ecc71;overflow:hidden;box-shadow:0 2px 6px #0005;background:#ddd;position:relative}
+  .thumb{width:90px;height:90px;border-radius:13px;border:4px solid #2ecc71;overflow:hidden;box-shadow:0 3px 9px #0006;background:#ddd;position:relative}
   .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-  .thumb .sc{position:absolute;right:0;bottom:0;background:#000a;color:#fff;font-size:9px;font-weight:800;padding:0 3px;border-top-left-radius:5px}
+  .thumb .sc{position:absolute;right:0;bottom:0;background:#000b;color:#fff;font-size:13px;font-weight:800;padding:1px 6px;border-top-left-radius:7px}
   .poi{font-size:19px;line-height:1;filter:drop-shadow(0 1px 1px #fff) drop-shadow(0 0 2px #fff)}
   .hosp{background:#e8112d;color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:15px;box-shadow:0 1px 4px #0006;border:2px solid #fff}
   .lp{width:100%} .lp img{width:100%;height:260px;object-fit:cover;border-radius:11px;background:#eee}
@@ -106,14 +106,14 @@ function popupHTML(d){const c=[];
    '<div class="lk"><a class="a" href="'+esc(d.url)+'" target="_blank" rel="noopener">'+t('view')+'</a><a class="b2" href="'+esc(d.gmaps)+'" target="_blank" rel="noopener">'+t('map')+'</a></div></div>';}
 function thumbHTML(d){return '<div class="thumb" style="border-color:'+color(d.score)+'">'+(d.cover?'<img src="'+d.cover+'" loading="lazy">':'')+'<span class="sc">'+d.score+'</span></div>';}
 const listingLayer=L.layerGroup().addTo(map);
-const THUMB_MAX=55, RENDER_MAX=220;
+const THUMB_MAX=40, RENDER_MAX=220;
 const POPOPTS={maxWidth:Math.min(Math.round(innerWidth*0.92),460), minWidth:Math.min(Math.round(innerWidth*0.92),300), maxHeight:Math.round(innerHeight*0.74), autoPan:true, autoPanPadding:[14,14]};
 function rebuild(){
   listingLayer.clearLayers();
   const b=map.getBounds(); let vis2=filtered().filter(d=>b.contains([d.lat,d.lon]));
   const total=filtered().length; const photo=vis2.length<=THUMB_MAX;
   vis2.slice(0,RENDER_MAX).forEach(d=>{let m;
-    if(photo&&d.cover) m=L.marker([d.lat,d.lon],{icon:L.divIcon({className:'',html:thumbHTML(d),iconSize:[46,46],iconAnchor:[23,23]}),riseOnHover:true});
+    if(photo&&d.cover) m=L.marker([d.lat,d.lon],{icon:L.divIcon({className:'',html:thumbHTML(d),iconSize:[90,90],iconAnchor:[45,45]}),riseOnHover:true});
     else m=L.circleMarker([d.lat,d.lon],{radius:Math.max(5,(d.score-40)/6),color:'#fff',weight:1,fillColor:color(d.score),fillOpacity:.9});
     m.bindPopup(()=>popupHTML(d),POPOPTS); listingLayer.addLayer(m);});
   document.getElementById('cnt').textContent=t('cnt',{n:vis2.length,t:total})+(photo?'':' '+t('zoomHint'));
