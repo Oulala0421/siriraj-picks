@@ -21,9 +21,9 @@
   .bar{width:100%; max-width:480px; height:5px; background:#ffffff66; border-radius:9px; margin:4px 14px 0; overflow:hidden}
   .bar>i{display:block; height:100%; width:0; background:linear-gradient(90deg,#ff7a45,#ff4d79); transition:width .25s}
   #stage{position:relative; width:100%; max-width:480px; flex:1; padding:8px 14px 0; display:flex; align-items:flex-start; justify-content:center}
-  .card{position:absolute; top:4px; left:14px; right:14px; background:#fff; border-radius:22px; overflow:hidden;
-    box-shadow:0 16px 36px #0003, 0 2px 6px #0002; will-change:transform; touch-action:pan-y}
-  .photo{position:relative; width:100%; aspect-ratio:4/3.05; background:#1d1b27 center/cover no-repeat; user-select:none}
+  .card{position:absolute; top:4px; bottom:4px; left:14px; right:14px; background:#fff; border-radius:22px; overflow:hidden;
+    box-shadow:0 16px 36px #0003, 0 2px 6px #0002; will-change:transform; touch-action:pan-y; display:flex; flex-direction:column}
+  .photo{position:relative; width:100%; aspect-ratio:4/3.05; flex:none; background:#1d1b27 center/cover no-repeat; user-select:none}
   .photo .nav{position:absolute; inset:0; display:flex}
   .photo .nav span{flex:1; cursor:pointer}
   .pcount{position:absolute; top:10px; left:12px; background:#0007; color:#fff; font-size:12px; padding:3px 9px; border-radius:999px; font-weight:700}
@@ -39,7 +39,7 @@
   .grad{position:absolute; left:0; right:0; bottom:0; height:120px; background:linear-gradient(transparent,#000c)}
   .ptitle{position:absolute; left:14px; right:14px; bottom:34px; color:#fff; font-size:17px; font-weight:800; line-height:1.25; text-shadow:0 1px 4px #000a; max-height:44px; overflow:hidden}
   .parea{position:absolute; left:14px; bottom:10px; color:#fff; font-size:13px; font-weight:800; text-shadow:0 1px 4px #000a; background:#0006; padding:3px 9px; border-radius:999px}
-  .body{padding:11px 15px 14px; max-height:34vh; overflow:auto}
+  .body{padding:11px 15px 14px; flex:1; overflow:auto}
   .chips{display:flex; flex-wrap:wrap; gap:6px}
   .chip{font-size:12.5px; font-weight:700; padding:5px 9px; border-radius:999px; background:#f1eef6; color:#3c3850; white-space:nowrap}
   .chip.k{background:#eafaf0; color:#178a4c}
@@ -52,7 +52,7 @@
   .links{margin-top:10px; display:flex; gap:8px}
   .links a{flex:1; text-align:center; text-decoration:none; font-weight:800; font-size:13px; padding:9px; border-radius:11px}
   .links a.l1{background:#ff7a45; color:#fff} .links a.l2{background:#1f6feb; color:#fff}
-  .actions{width:100%; max-width:480px; display:flex; gap:30px; align-items:center; justify-content:center; padding:10px 0 6px}
+  .actions{width:100%; max-width:480px; display:flex; gap:30px; align-items:center; justify-content:center; padding:10px 0 16px}
   .actions button{border:none; cursor:pointer; border-radius:50%; box-shadow:0 6px 16px #0003; display:grid; place-items:center; background:#fff; transition:transform .1s}
   .actions button:active{transform:scale(.9)}
   .b-undo{width:46px; height:46px; font-size:20px; color:#b9a14a}
@@ -94,7 +94,6 @@
   <button class="b-pass" id="bpass">✗</button>
   <button class="b-like" id="blike">❤</button>
 </div>
-<div class="lbls"><span class="l" id="lblL"></span><span id="lblU"></span><span class="r" id="lblR"></span></div>
 <div class="screen" id="screen"></div>
 
 <script>
@@ -178,7 +177,6 @@ function cardHTML(d){
 let cur=null, photoI=0;
 function applyStatic(){
   $("h1").textContent=t('title'); $("blang").textContent = LANG==='zh'?'ไทย':'中文';
-  $("lblL").textContent=t('lblL'); $("lblU").textContent=t('lblU'); $("lblR").textContent=t('lblR');
 }
 function render(){
   try{
