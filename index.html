@@ -153,7 +153,11 @@ function freshState(){ return {round:1, pool:[...Array(N).keys()], pos:0, chosen
 let state=store.get(SKEY);
 if(!state || !Array.isArray(state.pool) || state.pool.some(i=>i<0||i>=N)) state=freshState();
 if(!Array.isArray(state.rejected)) state.rejected=[];   // 相容舊存檔
-function save(){ store.set(SKEY,state); }
+function save(){ store.set(SKEY,state);
+  // 另存一份「以網址為 key」的喜好紀錄，讓地圖頁（物件數不同、索引不通用）也能同步顯示
+  try{ store.set("siriraj_marks",{like:state.chosen.map(i=>DATA[i]&&DATA[i].url).filter(Boolean),
+                                  pass:state.rejected.map(i=>DATA[i]&&DATA[i].url).filter(Boolean)}); }catch(e){}
+}
 const $=id=>document.getElementById(id), stage=$("stage");
 let overlay=null; // 'round' | 'picks' | null
 
