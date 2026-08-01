@@ -149,7 +149,7 @@ function thumbHTML(d){const mk=markOf(d);
     (mk==='like'?'<span class="mk">❤️</span>':mk==='pass'?'<span class="mk">✖️</span>':'')+'</div>';}
 const listingLayer=L.layerGroup().addTo(map);
 const THUMB_MAX=40, RENDER_MAX=220;
-const MIN_THUMB_ZOOM=17;   // 需放大到這個倍率(含)以上才顯示房子照片，否則一律圓點
+const MIN_THUMB_ZOOM=12;   // 需放大到這個倍率(含)以上才顯示房子照片，否則一律圓點
 const POPOPTS={maxWidth:Math.min(Math.round(innerWidth*0.92),460), minWidth:Math.min(Math.round(innerWidth*0.92),300), maxHeight:Math.round(innerHeight*0.74), autoPan:true, autoPanPadding:[14,14]};
 function rebuild(){
   listingLayer.clearLayers();
