@@ -153,11 +153,27 @@ function freshState(){ return {round:1, pool:[...Array(N).keys()], pos:0, chosen
 let state=store.get(SKEY);
 if(!state || !Array.isArray(state.pool) || state.pool.some(i=>i<0||i>=N)) state=freshState();
 if(!Array.isArray(state.rejected)) state.rejected=[];   // 相容舊存檔
+const MYURLS=new Set(DATA.map(d=>d.url));   // 本頁管轄的物件（地圖有更多，別動到它們）
 function save(){ store.set(SKEY,state);
-  // 另存一份「以網址為 key」的喜好紀錄，讓地圖頁（物件數不同、索引不通用）也能同步顯示
-  try{ store.set("siriraj_marks",{like:state.chosen.map(i=>DATA[i]&&DATA[i].url).filter(Boolean),
-                                  pass:state.rejected.map(i=>DATA[i]&&DATA[i].url).filter(Boolean)}); }catch(e){}
+  // 另存一份「以網址為 key」的喜好紀錄，讓地圖頁（物件數不同、索引不通用）也能同步；
+  // 只覆蓋本頁管轄的部分，地圖上另外標記的物件保留不動。
+  try{ const prev=store.get("siriraj_marks")||{like:[],pass:[]};
+       const keep=a=>((a||[]).filter(u=>!MYURLS.has(u)));
+       store.set("siriraj_marks",{
+         like:keep(prev.like).concat(state.chosen.map(i=>DATA[i]&&DATA[i].url).filter(Boolean)),
+         pass:keep(prev.pass).concat(state.rejected.map(i=>DATA[i]&&DATA[i].url).filter(Boolean))}); }catch(e){}
 }
+// 載入時吸收「在地圖上標記過」的本頁物件，讓兩邊一致
+(function absorbMarks(){
+  try{ const m=store.get("siriraj_marks"); if(!m)return;
+    const idx=new Map(DATA.map((d,i)=>[d.url,i]));
+    const add=(urls,arr,other)=>((urls||[]).forEach(u=>{ const i=idx.get(u);
+      if(i==null||arr.includes(i))return;
+      const k=other.indexOf(i); if(k>=0)other.splice(k,1);
+      arr.push(i); }));
+    add(m.like,state.chosen,state.rejected); add(m.pass,state.rejected,state.chosen);
+  }catch(e){}
+})();
 const $=id=>document.getElementById(id), stage=$("stage");
 let overlay=null; // 'round' | 'picks' | null
 
@@ -230,7 +246,9 @@ function fling(choose){
   if(!cur||state.pos>=state.pool.length)return;
   const di=state.pool[state.pos];
   cur.style.transform=choose?"translateX(120%) rotate(22deg)":"translateX(-120%) rotate(-22deg)"; cur.style.opacity="0";
-  if(choose)state.chosen.push(di); else state.rejected.push(di);
+  const arr=choose?state.chosen:state.rejected, other=choose?state.rejected:state.chosen;
+  const k=other.indexOf(di); if(k>=0)other.splice(k,1);      // 曾在地圖標成相反的，改過來
+  if(!arr.includes(di))arr.push(di);                          // 去重
   state.actions.push({i:di,c:choose}); state.pos++; save(); setTimeout(render,170);
 }
 function choose(c){ if(cur)fling(c); }
